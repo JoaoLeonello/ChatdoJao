@@ -24,22 +24,24 @@
             </div>
             <div class="ml-2 font-bold text-3xl">Chat do Jao</div>
           </div>
-          <div
-            class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
-          >
-            <div class="h-20 w-20 rounded-full border overflow-hidden">
+          <div class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
+            <!-- <div class="h-20 w-20 rounded-full border overflow-hidden">
               <img
-                src=""
+                src="https://www.facebook.com/photo?fbid=4257212934307787&set=a.160204470675341"
                 alt="Avatar"
                 class="h-full w-full"
               />
-            </div>
-            <div class="text-sm font-semibold mt-2">Aminos Co.</div>
+            </div> -->
+            <input 
+				placeholder="Your name:"
+				type="text"
+                class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"	
+			>
           </div>
           <div class="flex flex-col mt-8">
-            
-                 
-            
+            <div class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
+				<div class="text-sm font-semibold mt-2">Online users:</div>
+            </div>
           </div>
         </div>
         <div class="flex flex-col flex-auto h-full p-6">
@@ -51,11 +53,11 @@
                 <div class="grid grid-cols-12 gap-y-2">
                   <div class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
-                      <div
+                      <!-- <div
                         class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
                       >
-                        A
-                      </div>
+                        Teste
+                      </div> -->
                       <div
                         class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
                       >
@@ -71,11 +73,11 @@
                     <div
                       class="flex items-center justify-start flex-row-reverse"
                     >
-                      <div
+                      <!-- <div
                         class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
                       >
-                        A
-                      </div>
+                        pedro
+                      </div> -->
                       <div
                         class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
                       >
@@ -89,7 +91,7 @@
               </div>
             </div>
             <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
-              <div>
+              <!-- <div>
                 <button
                   class="flex items-center justify-center text-gray-400 hover:text-gray-600"
                 >
@@ -108,7 +110,7 @@
                     ></path>
                   </svg>
                 </button>
-              </div>
+              </div> -->
               <div class="flex-grow ml-4">
                 <div class="relative w-full">
                   <input
@@ -118,7 +120,7 @@
                   <button
                     class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
                   >
-                    <svg
+                    <!-- <svg
                       class="w-6 h-6"
                       fill="none"
                       stroke="currentColor"
@@ -131,13 +133,14 @@
                         stroke-width="2"
                         d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       ></path>
-                    </svg>
+                    </svg> -->
                   </button>
                 </div>
               </div>
               <div class="ml-4">
                 <button
 					class="pressDownButton"
+					@click="sendMessage"
                 >
                   <span>Send</span>
                   <!-- <span class="ml-2">
@@ -168,23 +171,42 @@
 
 <script>
 export default {
-  name: "App",
-};
+	name: "App",
+
+	data() {
+		return {
+			messages: [],
+		}
+	},
+	created() {
+		this.connectToServer();
+	},
+	methods: {
+		connectToServer() {
+			this.$socket.emit('emit_method')
+		},
+
+        sendMessage(data) {
+            // $socket is socket.io-client instance
+            this.$socket.emit('emit_method', data)
+        }
+    },
+}; 
 </script>
 
 <style scoped>
 .pressDownButton {
-    background-color: hsl(222, 100%, 95%);
-    padding: 12px 24px;
-    color: hsl(243, 80%, 62%);
-    border-radius: 6px;
-    border-bottom: 4px solid hsl(221, 89%, 85%);
-    border-top: 0px solid rgba(249, 250, 251);
-    transition: all 0.1s ease-in-out;
+  background-color: hsl(222, 100%, 95%);
+  padding: 12px 24px;
+  color: hsl(243, 80%, 62%);
+  border-radius: 6px;
+  border-bottom: 4px solid hsl(221, 89%, 85%);
+  border-top: 0px solid rgba(249, 250, 251);
+  transition: all 0.1s ease-in-out;
 }
 
-.pressDownButton:hover {
-    border-bottom-width: 0;
-    border-top-width: 4px;
+.pressDownButton:active {
+  border-bottom-width: 0;
+  border-top-width: 4px;
 }
 </style>

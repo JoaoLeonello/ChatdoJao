@@ -1,18 +1,20 @@
 const express = require('express');
-const path = require('path');
+const cors = require('cors');
 
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', path.join(__dirname, 'public'));
+app.use(express.json());
+app.use(cors())
 
-app.engine('html', require('ejs'.renderFile));
-app.set('view engine', 'html');
+app.post('/', (req, res) => {
+    console.log(req.body.name)
+    res.end();
+})
 
-app.use('/', (req, res) => {
-    res.render('index.html');
-});
+io.on('connection', socket => {
+    console.log('SOCKET CONNECT')
+})
 
 server.listen(3000);

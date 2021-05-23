@@ -2,5 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "nodemon": "^2.0.7"
+  }
 }
