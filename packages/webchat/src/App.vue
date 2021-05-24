@@ -198,7 +198,6 @@ export default {
 
     socketsConnected({ socketsConnected }) {
       this.socketsConnected = socketsConnected;
-      console.log(socketsConnected)
     }
   },
   methods: {
