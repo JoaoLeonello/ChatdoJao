@@ -1,20 +1,18 @@
 const express = require('express');
-const cors = require('cors');
-
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
 
-app.use(express.json());
-app.use(cors())
+const server = require("http").createServer(app);
+const SocketIO = require("socket.io");
+io = SocketIO(server, { cors: { origin: '*' }, pingInterval: 60000 });
 
-app.post('/', (req, res) => {
-    console.log(req.body.name)
-    res.end();
-})
 
-io.on('connection', socket => {
-    console.log('SOCKET CONNECT')
-})
+io.engine.on('connection', async (socket) => {
+    console.log('connection', socket.id)
 
-server.listen(3000);
+    socket.on('client_emit_message', (messageObject) => {
+        console.log('here')
+        console.log(messageObject)
+    });
+});
+
+server.listen(3052, () => { console.log('Server ONLINE') });
