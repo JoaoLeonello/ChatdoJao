@@ -35,11 +35,16 @@
               />
             </div> -->
             <input
-              placeholder="Your name:"
+              placeholder="Username"
               type="text"
               class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
               v-model="username"
             />
+            <button
+              class="pressDownButton"
+              @click="changeUsername"
+            >Change username
+            </button>
           </div>
           <div class="flex flex-col mt-8">
             <div
@@ -121,9 +126,9 @@
                     v-model="userMessageInput"
                     @keydown.enter="sendMessage"
                   />
-                  <button
+                  <!-- <button
                     class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
-                  >
+                  > -->
                     <!-- <svg
                       class="w-6 h-6"
                       fill="none"
@@ -138,7 +143,7 @@
                         d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       ></path>
                     </svg> -->
-                  </button>
+                  <!-- </button> -->
                 </div>
               </div>
               <div class="ml-4">
@@ -171,6 +176,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueSocketIOExt from 'vue-socket.io-extended';
+import { io } from 'socket.io-client';
+
 export default {
   name: "App",
 
@@ -192,7 +201,7 @@ export default {
       this.isConnected = false;
     },
 
-    messageChannel({ messageObject }) {
+    messageChannel(messageObject) {
       this.messagesPool.push(messageObject);
     },
 
@@ -200,16 +209,23 @@ export default {
       this.socketsConnected = socketsConnected;
     }
   },
+  created() {
+   
+  },
   methods: {
     sendMessage() {
-      const messageObject = {
-        sender: this.username,
-        message: this.userMessageInput,
-      };
-
-      this.$socket.client.emit("client_emit_message", { messageObject });
-
+      this.$socket.client.emit("client_emit_message", { message: this.userMessageInput });
       this.userMessageInput = '';
+    },
+
+    changeUsername() {
+      if (!this.$socket) {
+        const socket = io('http://localhost:3052');
+        Vue.use(VueSocketIOExt, socket, { query: { username: this.username } });
+        return;
+      }
+        
+      this.$socket.client.emit("client_emit_change_username", { username: this.username });
     },
   },
 };

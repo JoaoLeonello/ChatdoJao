@@ -7,13 +7,23 @@ io = SocketIO(server, { cors: { origin: '*' }, pingInterval: 60000 });
 
 let socketsConnected = []
 io.on('connection', async (socket) => {
-    socketsConnected.push(socket.id);
-    socket.emit('socketsConnected', { socketsConnected });
+    console.log('teste', socket.id, JSON.stringify(socket.handshake.query));
 
-    socket.on('client_emit_message', (messageObject) => {
-        io.emit('messageChannel', messageObject);
-        console.log(messageObject)
+
+    let socketUsername = socket.handshake.query.username;
+    socketsConnected.push(socketUsername);
+    
+    
+
+    socket.on('client_emit_message', ({ message }) => {
+        io.emit('messageChannel', { message, sender: socketUsername});
     });
+
+    socket.on('client_emit_change_username', ({ username }) => {
+        socketUsername = username;
+        socketsConnected = socketsConnected.filter(socketUsername => socketUsername !== username)
+        socketsConnected.push(username);
+    })
 });
 
 io.on('disconnect', async (socket) => {
