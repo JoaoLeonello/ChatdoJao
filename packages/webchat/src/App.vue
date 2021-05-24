@@ -24,7 +24,9 @@
             </div>
             <div class="ml-2 font-bold text-3xl">Chat do Jao</div>
           </div>
-          <div class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
+          <div
+            class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
+          >
             <!-- <div class="h-20 w-20 rounded-full border overflow-hidden">
               <img
                 src="https://www.facebook.com/photo?fbid=4257212934307787&set=a.160204470675341"
@@ -32,16 +34,19 @@
                 class="h-full w-full"
               />
             </div> -->
-            <input 
-				placeholder="Your name:"
-				type="text"
-                class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
-				v-model="username"
-			>
+            <input
+              placeholder="Your name:"
+              type="text"
+              class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+              v-model="username"
+            />
           </div>
           <div class="flex flex-col mt-8">
-            <div class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
-				<div class="text-sm font-semibold mt-2">Online users:</div>
+            <div
+              class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
+            >
+              <div class="text-sm font-semibold mt-2">Online users:</div>
+              <div v-for="(users, index) in socketsConnected" :key="index">{{ users }}</div>
             </div>
           </div>
         </div>
@@ -51,39 +56,33 @@
           >
             <div class="flex flex-col h-full overflow-x-auto mb-4">
               <div class="flex flex-col h-full">
-                <div class="grid grid-cols-12 gap-y-2">
-                  <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                <div v-for="(message, index) in messagesPool" :key="index" class="grid grid-cols-12 gap-y-2">
+                  <div v-if="message.sender !== username" class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
-                      <!-- <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
-                        Teste
-                      </div> -->
+                      <div>
+                        {{ message.sender }}
+                      </div>
                       <div
                         class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
                       >
                         <div>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Vel ipsa commodi illum saepe numquam maxime
-                          asperiores voluptate sit, minima perspiciatis.
+                          {{ message.message }}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                  <div v-if="message.sender === username" class="col-start-6 col-end-13 p-3 rounded-lg">
                     <div
                       class="flex items-center justify-start flex-row-reverse"
                     >
-                      <!-- <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
-                        pedro
-                      </div> -->
+                      <div>
+                        {{ message.sender }}
+                      </div>
                       <div
                         class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
                       >
                         <div>
-                          Lorem ipsum dolor sit, amet consectetur adipisicing. ?
+                          {{ message.message }}
                         </div>
                       </div>
                     </div>
@@ -91,7 +90,9 @@
                 </div>
               </div>
             </div>
-            <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+            <div
+              class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
+            >
               <!-- <div>
                 <button
                   class="flex items-center justify-center text-gray-400 hover:text-gray-600"
@@ -117,8 +118,8 @@
                   <input
                     type="text"
                     class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
-					v-model="userMessageInput"
-					@keydown.enter="sendMessage"
+                    v-model="userMessageInput"
+                    @keydown.enter="sendMessage"
                   />
                   <button
                     class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
@@ -141,10 +142,7 @@
                 </div>
               </div>
               <div class="ml-4">
-                <button
-					class="pressDownButton"
-					@click="sendMessage"
-                >
+                <button class="pressDownButton" @click="sendMessage">
                   <span>Send</span>
                   <!-- <span class="ml-2">
                     <svg
@@ -174,45 +172,48 @@
 
 <script>
 export default {
-	name: "App",
+  name: "App",
 
-	data() {
-		return {
-			username: '',
-			messagesPool: [],
-			userMessageInput: '',
+  data() {
+    return {
+      username: "",
+      messagesPool: [],
+      userMessageInput: "",
       isConnected: false,
-		}
-	},
-	sockets: {
-		connect() {
-		this.isConnected = true;
-		},
-
-		disconnect() {
-		this.isConnected = false;
-		},
-
-		messageChannel(data) {
-		this.messagesPool = data
-		},
-
-		
-	},
-	methods: {
-        sendMessage() {
-			const messageObject = {
-				sender: this.username,
-				message: this.userMessageInput,
-			}
-
-            this.$socket.client.emit(
-				'client_emit_message', 
-				messageObject
-			);
-        }
+      socketsConnected: [],
+    };
+  },
+  sockets: {
+    connect() {
+      this.isConnected = true;
     },
-}; 
+
+    disconnect() {
+      this.isConnected = false;
+    },
+
+    messageChannel({ messageObject }) {
+      this.messagesPool.push(messageObject);
+    },
+
+    socketsConnected({ socketsConnected }) {
+      this.socketsConnected = socketsConnected;
+      console.log(socketsConnected)
+    }
+  },
+  methods: {
+    sendMessage() {
+      const messageObject = {
+        sender: this.username,
+        message: this.userMessageInput,
+      };
+
+      this.$socket.client.emit("client_emit_message", { messageObject });
+
+      this.userMessageInput = '';
+    },
+  },
+};
 </script>
 
 <style scoped>
