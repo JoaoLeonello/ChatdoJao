@@ -35,7 +35,8 @@
             <input 
 				placeholder="Your name:"
 				type="text"
-                class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"	
+                class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+				v-model="username"
 			>
           </div>
           <div class="flex flex-col mt-8">
@@ -116,6 +117,8 @@
                   <input
                     type="text"
                     class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+					v-model="userMessageInput"
+					@keydown.enter="sendMessage"
                   />
                   <button
                     class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
@@ -175,20 +178,38 @@ export default {
 
 	data() {
 		return {
-			messages: [],
+			username: '',
+			messagesPool: [],
+			userMessageInput: '',
+      isConnected: false,
 		}
 	},
-	created() {
-		this.connectToServer();
-	},
-	methods: {
-		connectToServer() {
-			this.$socket.emit('emit_method')
+	sockets: {
+		connect() {
+		this.isConnected = true;
 		},
 
-        sendMessage(data) {
-            // $socket is socket.io-client instance
-            this.$socket.emit('emit_method', data)
+		disconnect() {
+		this.isConnected = false;
+		},
+
+		messageChannel(data) {
+		this.messagesPool = data
+		},
+
+		
+	},
+	methods: {
+        sendMessage() {
+			const messageObject = {
+				sender: this.username,
+				message: this.userMessageInput,
+			}
+
+            this.$socket.client.emit(
+				'client_emit_message', 
+				messageObject
+			);
         }
     },
 }; 
