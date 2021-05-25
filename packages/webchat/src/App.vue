@@ -192,9 +192,8 @@ export default {
     };
   },
   sockets: {
-    isConnected() {
+    connect() {
       this.isConnected = true;
-      console.log('aqui');
     },
 
     disconnect() {

@@ -6,14 +6,13 @@ const SocketIO = require("socket.io");
 io = SocketIO(server, { cors: { origin: '*' }, pingInterval: 60000 });
 
 let socketsConnected = []
-io.on('connection', async (socket) => {
+io.on('connect', async (socket) => {
     let socketUsername = socket.handshake.query.username;
     socketsConnected.push(socketUsername);
 
-    socket.emit('isConnected');
     io.emit('socketsConnected', { socketsConnected });
 
-    // console.log('CONECTADO', socket.id, socketUsername, socketsConnected);
+    console.log('CONECTADO', socket.id, socketUsername, socketsConnected);
 
     socket.on('client_emit_message', ({ message }) => {
         io.emit('messageChannel', { message, sender: socketUsername});
