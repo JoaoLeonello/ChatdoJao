@@ -7,27 +7,27 @@ io = SocketIO(server, { cors: { origin: '*' }, pingInterval: 60000 });
 
 let socketsConnected = []
 io.on('connection', async (socket) => {
-    console.log('teste', socket.id, JSON.stringify(socket.handshake.query));
-
-
     let socketUsername = socket.handshake.query.username;
     socketsConnected.push(socketUsername);
-    
-    
+
+    socket.emit('isConnected');
+    io.emit('socketsConnected', { socketsConnected });
+
+    // console.log('CONECTADO', socket.id, socketUsername, socketsConnected);
 
     socket.on('client_emit_message', ({ message }) => {
         io.emit('messageChannel', { message, sender: socketUsername});
+        console.log('MESSAGE_RECEIVED', { message, sender: socketUsername})
     });
 
     socket.on('client_emit_change_username', ({ username }) => {
-        socketUsername = username;
-        socketsConnected = socketsConnected.filter(socketUsername => socketUsername !== username)
+        socketsConnected = socketsConnected.filter(username => username !== socketUsername)
         socketsConnected.push(username);
+        socketUsername = username
     })
 });
 
 io.on('disconnect', async (socket) => {
-    console.log('DISCONNECTED')
     socketsConnected = socketsConnected.filter(sckt => sckt.id !== socket.id)
     socket.emit('socketsConnected', { socketsConnected });
 })

@@ -43,8 +43,7 @@
             <button
               class="pressDownButton"
               @click="changeUsername"
-            >Change username
-            </button>
+            >{{ isConnected ? 'Change username' : 'Connect' }}</button>
           </div>
           <div class="flex flex-col mt-8">
             <div
@@ -188,13 +187,14 @@ export default {
       username: "",
       messagesPool: [],
       userMessageInput: "",
-      isConnected: false,
       socketsConnected: [],
+      isConnected: false,
     };
   },
   sockets: {
-    connect() {
+    isConnected() {
       this.isConnected = true;
+      console.log('aqui');
     },
 
     disconnect() {
@@ -207,21 +207,23 @@ export default {
 
     socketsConnected({ socketsConnected }) {
       this.socketsConnected = socketsConnected;
-    }
-  },
-  created() {
-   
+    },
   },
   methods: {
     sendMessage() {
+      if (this.userMessageInput === '') {
+        return;
+      }
+
       this.$socket.client.emit("client_emit_message", { message: this.userMessageInput });
       this.userMessageInput = '';
     },
 
     changeUsername() {
       if (!this.$socket) {
-        const socket = io('http://localhost:3052');
-        Vue.use(VueSocketIOExt, socket, { query: { username: this.username } });
+        const socket = io('http://localhost:3052', { query: { "username": `${this.username}` } });
+        Vue.use(VueSocketIOExt, socket);
+
         return;
       }
         
