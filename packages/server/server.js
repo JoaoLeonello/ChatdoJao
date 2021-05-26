@@ -16,8 +16,7 @@ io.on('connection', async (socket) => {
     io.emit('socketsConnected', { socketsConnected });
 
     socket.on('client_emit_message', ({ message }) => {
-        console.log(io)
-        io.emit('messageChannel', { message, sender: socketUsername});
+        io.emit('chatMessage', { message, sender: socketUsername});
     });
 
     socket.on('client_emit_change_username', ({ username }) => {

@@ -42,7 +42,7 @@
             />
             <button
               class="pressDownButton"
-              @click="changeUsername"
+              @click="handleButtonClick"
             >{{ isConnected ? 'Change username' : 'Connect' }}</button>
           </div>
           <div class="flex flex-col mt-8">
@@ -178,6 +178,7 @@
 import Vue from 'vue';
 import VueSocketIOExt from 'vue-socket.io-extended';
 import { io } from 'socket.io-client';
+// import store from './store/store';
 
 export default {
   name: "App",
@@ -191,43 +192,52 @@ export default {
       isConnected: false,
     };
   },
-  sockets: {
-    connect() {
-      this.isConnected = true;
-    },
+  // sockets: {
+  //   connect() {
+  //     this.isConnected = true;
+  //   },
 
-    disconnect() {
-      this.isConnected = false;
-    },
+  //   disconnect() {
+  //     this.isConnected = false;
+  //   },
 
-    messageChannel(messageObject) {
-      this.messagesPool.push(messageObject);
-    },
+  //   messageChannel(messageObject) {
+  //     this.messagesPool.push(messageObject);
+  //   },
 
-    socketsConnected({ socketsConnected }) {
-      this.socketsConnected = socketsConnected;
-    },
-  },
+  //   socketsConnected({ socketsConnected }) {
+  //     this.socketsConnected = socketsConnected;
+  //   },
+  // },
   methods: {
-    sendMessage() {
-      if (this.userMessageInput === '') {
+    // sendMessage() {
+    //   if (this.userMessageInput === '') {
+    //     return;
+    //   }
+
+    //   this.$socket.client.emit("client_emit_message", { message: this.userMessageInput });
+    //   this.userMessageInput = '';
+    // },
+
+    handleButtonClick() {
+      if (!this.$socket) {
+        this.setupSocket();
         return;
       }
-
-      this.$socket.client.emit("client_emit_message", { message: this.userMessageInput });
-      this.userMessageInput = '';
+      
+      this.changeUsername();
     },
 
-    changeUsername() {
-      if (!this.$socket) {
-        const socket = io('http://localhost:3052', { query: { "username": `${this.username}` } });
+    setupSocket() {
+      const socket = io('http://localhost:3052', { query: { "username": `${this.username}` } });
         Vue.use(VueSocketIOExt, socket);
 
         return;
-      }
-        
-      this.$socket.client.emit("client_emit_change_username", { username: this.username });
     },
+
+    changeUsername() {
+      this.$socket.client.emit("client_emit_change_username", { username: this.username });
+    }
   },
 };
 </script>
