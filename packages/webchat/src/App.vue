@@ -178,7 +178,6 @@
 import Vue from 'vue';
 import VueSocketIOExt from 'vue-socket.io-extended';
 import { io } from 'socket.io-client';
-// import store from './store/store';
 
 export default {
   name: "App",
@@ -192,32 +191,32 @@ export default {
       isConnected: false,
     };
   },
-  // sockets: {
-  //   connect() {
-  //     this.isConnected = true;
-  //   },
+  sockets: {
+    connect() {
+      this.isConnected = true;
+    },
 
-  //   disconnect() {
-  //     this.isConnected = false;
-  //   },
+    disconnect() {
+      this.isConnected = false;
+    },
 
-  //   messageChannel(messageObject) {
-  //     this.messagesPool.push(messageObject);
-  //   },
+    messageChannel(messageObject) {
+      this.messagesPool.push(messageObject);
+    },
 
-  //   socketsConnected({ socketsConnected }) {
-  //     this.socketsConnected = socketsConnected;
-  //   },
-  // },
+    socketsConnected({ socketsConnected }) {
+      this.socketsConnected = socketsConnected;
+    },
+  },
   methods: {
-    // sendMessage() {
-    //   if (this.userMessageInput === '') {
-    //     return;
-    //   }
+    sendMessage() {
+      if (this.userMessageInput === '') {
+        return;
+      }
 
-    //   this.$socket.client.emit("client_emit_message", { message: this.userMessageInput });
-    //   this.userMessageInput = '';
-    // },
+      this.$socket.client.emit("client_emit_message", { message: this.userMessageInput });
+      this.userMessageInput = '';
+    },
 
     handleButtonClick() {
       if (!this.$socket) {
