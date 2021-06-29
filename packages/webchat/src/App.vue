@@ -43,7 +43,7 @@
             <button
               class="pressDownButton"
               @click="handleButtonClick"
-            >{{ isConnected ? 'Change username' : 'Connect' }}</button>
+            >Confirm</button>
           </div>
           <div class="flex flex-col mt-8">
             <div
@@ -175,10 +175,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueSocketIOExt from 'vue-socket.io-extended';
-import { io } from 'socket.io-client';
-
 export default {
   name: "App",
 
@@ -188,25 +184,7 @@ export default {
       messagesPool: [],
       userMessageInput: "",
       socketsConnected: [],
-      isConnected: false,
     };
-  },
-  sockets: {
-    connect() {
-      this.isConnected = true;
-    },
-
-    disconnect() {
-      this.isConnected = false;
-    },
-
-    messageChannel(messageObject) {
-      this.messagesPool.push(messageObject);
-    },
-
-    socketsConnected({ socketsConnected }) {
-      this.socketsConnected = socketsConnected;
-    },
   },
   methods: {
     sendMessage() {
@@ -214,29 +192,26 @@ export default {
         return;
       }
 
-      this.$socket.client.emit("client_emit_message", { message: this.userMessageInput });
+      this.$socket.client.emit('client_emit_message', { message: this.userMessageInput });
       this.userMessageInput = '';
     },
 
     handleButtonClick() {
-      if (!this.$socket) {
-        this.setupSocket();
-        return;
-      }
-      
       this.changeUsername();
-    },
-
-    setupSocket() {
-      const socket = io('http://localhost:3052', { query: { "username": `${this.username}` } });
-        Vue.use(VueSocketIOExt, socket);
-
-        return;
     },
 
     changeUsername() {
       this.$socket.client.emit("client_emit_change_username", { username: this.username });
     }
+  },
+  sockets: {
+    chatMessage(messageObject) {
+      this.messagesPool.push(messageObject);
+    },
+
+    socketsConnected({ socketsConnected }) {
+      this.socketsConnected = socketsConnected;
+    },
   },
 };
 </script>

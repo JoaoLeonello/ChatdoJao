@@ -10,13 +10,12 @@ io.on('connection', async (socket) => {
     console.log('CONECTADO', socket.id);
 
     let socketUsername = socket.handshake.query.username;
-
     socketsConnected.push(socketUsername);
 
     io.emit('socketsConnected', { socketsConnected });
 
     socket.on('client_emit_message', ({ message }) => {
-        io.emit('chatMessage', { message, sender: socketUsername});
+        io.emit('chatMessage', { message, sender: socketUsername });
     });
 
     socket.on('client_emit_change_username', ({ username }) => {
