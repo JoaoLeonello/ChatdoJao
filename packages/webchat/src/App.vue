@@ -43,7 +43,9 @@
             <button
               class="pressDownButton"
               @click="handleButtonClick"
-            >{{ isConnected ? 'Change username' : 'Connect' }}</button>
+            >
+              Confirm
+            </button>
           </div>
           <div class="flex flex-col mt-8">
             <div
