@@ -43,7 +43,7 @@
             <button
               class="pressDownButton"
               @click="handleButtonClick"
-            >Confirm</button>
+            >{{ isConnected ? 'Change username' : 'Connect' }}</button>
           </div>
           <div class="flex flex-col mt-8">
             <div
@@ -175,6 +175,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueSocketIOExt from 'vue-socket.io-extended';
+import { io } from 'socket.io-client';
+
 export default {
   name: "App",
 
@@ -184,6 +188,7 @@ export default {
       messagesPool: [],
       userMessageInput: "",
       socketsConnected: [],
+      isConnected: false,
     };
   },
   methods: {
@@ -197,7 +202,19 @@ export default {
     },
 
     handleButtonClick() {
+      if (!this.$socket) {
+        this.setupSocket();
+        return;
+      }
+      
       this.changeUsername();
+    },
+
+    setupSocket() {
+      const socket = io('http://localhost:3052/ws', { query: { "username": `${this.username}` } });
+
+      Vue.use(VueSocketIOExt, socket);
+      return;
     },
 
     changeUsername() {
@@ -205,11 +222,20 @@ export default {
     }
   },
   sockets: {
+    connect() {
+      this.isConnected = true;
+    },
+
+    disconnect() {
+      this.isConnected = false;
+    },
+
     chatMessage(messageObject) {
+      console.log('MESSAGE RECEIVED')
       this.messagesPool.push(messageObject);
     },
 
-    socketsConnected({ socketsConnected }) {
+    socketsConnected(socketsConnected) {
       this.socketsConnected = socketsConnected;
     },
   },
