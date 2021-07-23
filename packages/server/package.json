@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn nodemon ./server.js"
+    "dev": "yarn nodemon ./server.js",
+    "start": "yarn nodemon ./server.js",
+    "build": "yarn nodemon ./server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
