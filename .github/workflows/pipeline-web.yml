@@ -34,7 +34,7 @@ jobs:
         env:
           NODE_ENV: test
       - run: yarn
-      - run: yarn test:web
+#       - run: yarn test:webchat
 
   deployment-step: 
     runs-on: ubuntu-latest
