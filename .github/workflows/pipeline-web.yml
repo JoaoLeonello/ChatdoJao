@@ -3,7 +3,7 @@ name: Pipeline Web with Test Routine and Deployment in Cloud Provider 🦾🤖�
 on:
   push:
     paths:
-      - "packages/web/**"
+      - "packages/webchat/**"
 
 jobs:
   test-routine:
