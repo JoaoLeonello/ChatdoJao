@@ -27,13 +27,6 @@
           <div
             class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
           >
-            <!-- <div class="h-20 w-20 rounded-full border overflow-hidden">
-              <img
-                src="https://www.facebook.com/photo?fbid=4257212934307787&set=a.160204470675341"
-                alt="Avatar"
-                class="h-full w-full"
-              />
-            </div> -->
             <input
               placeholder="Username"
               type="text"
@@ -43,7 +36,9 @@
             <button
               class="pressDownButton"
               @click="handleButtonClick"
-            >Confirm</button>
+            >
+              Confirm
+            </button>
           </div>
           <div class="flex flex-col mt-8">
             <div
@@ -175,6 +170,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueSocketIOExt from 'vue-socket.io-extended';
+import { io } from 'socket.io-client';
+
 export default {
   name: "App",
 
@@ -184,6 +183,7 @@ export default {
       messagesPool: [],
       userMessageInput: "",
       socketsConnected: [],
+      isConnected: false,
     };
   },
   methods: {
@@ -197,7 +197,19 @@ export default {
     },
 
     handleButtonClick() {
+      if (!this.$socket) {
+        this.setupSocket();
+        return;
+      }
+      
       this.changeUsername();
+    },
+
+    setupSocket() {
+      const socket = io('http://localhost:3052/ws', { query: { "username": `${this.username}` } });
+
+      Vue.use(VueSocketIOExt, socket);
+      return;
     },
 
     changeUsername() {
@@ -205,11 +217,20 @@ export default {
     }
   },
   sockets: {
+    connect() {
+      this.isConnected = true;
+    },
+
+    disconnect() {
+      this.isConnected = false;
+    },
+
     chatMessage(messageObject) {
+      console.log('MESSAGE RECEIVED')
       this.messagesPool.push(messageObject);
     },
 
-    socketsConnected({ socketsConnected }) {
+    socketsConnected(socketsConnected) {
       this.socketsConnected = socketsConnected;
     },
   },
