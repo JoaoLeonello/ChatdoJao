@@ -1,6 +1,10 @@
 name: Pipeline Web with Test Routine and Deployment in Cloud Provider 🦾🤖🦾
 
 on:
+  workflow_dispatch:
+    branches: [ main ]
+    paths:
+      - "packages/webchat/**"
   push:
     branches: [ main ]
     paths:
