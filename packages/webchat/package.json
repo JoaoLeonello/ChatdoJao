@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "start": "yarn add @vue/cli && vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "start": "yarn add @vue/cli && vue-cli-service serve"
   },
   
   "dependencies": {
