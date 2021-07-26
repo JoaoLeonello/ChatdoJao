@@ -1,7 +1,11 @@
 name: Pipeline Server with Test Routine and Deployment in Cloud Provider 🦾👽🦾
 
 on:
+  workflow_dispatch:
+    paths:
+        - "packages/server/**"
   push:
+    branches: [ main ]
     paths:
       - "packages/server/**"
 
