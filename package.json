@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Boilerplate yarn workspaces + vue js + node js + websockets",
   "main": "server.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "JoaoLeonello <jfelipe.pl@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "npx": "^10.2.2",
     "socket.io": "^4.1.2"
   },
   "repository": "https://github.com/JoaoLeonello/ChatdoJao.git",
