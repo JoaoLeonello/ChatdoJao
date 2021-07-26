@@ -2,10 +2,12 @@ name: Pipeline Web with Test Routine and Deployment in Cloud Provider 🦾🤖�
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
     paths:
       - "packages/webchat/**"
+  pull_request:
+    branches: [ main ]
+    
 
 jobs:
   test-routine:
