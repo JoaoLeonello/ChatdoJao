@@ -9,8 +9,6 @@ Vue.config.productionTip = false
 const socket = io('http://localhost:3052/');
 Vue.use(VueSocketIOExt, socket);
 
-//fix
-
 new Vue({
   render: h => h(App),
 }).$mount('#app')
