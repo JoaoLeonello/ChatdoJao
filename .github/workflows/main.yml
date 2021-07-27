@@ -30,7 +30,7 @@ jobs:
         env:
           NODE_ENV: test
       - run: yarn
-      - run: yarn test:server
+#       - run: yarn test:server
 
   deployment-step:
     runs-on: ubuntu-latest
