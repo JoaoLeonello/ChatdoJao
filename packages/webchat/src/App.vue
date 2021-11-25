@@ -206,7 +206,7 @@ export default {
     },
 
     setupSocket() {
-      const socket = io(`http://${process.env.HEROKU_API}:3052/ws`, { query: { "username": `${this.username}` } });
+      const socket = io(`http://23.22.130.173:3052/ws`, { query: { "username": `${this.username}` } });
 
       Vue.use(VueSocketIOExt, socket);
       return;
