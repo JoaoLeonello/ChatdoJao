@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const server = require("http").createServer(app);
+const server = require("https").createServer(app);
 const SocketIO = require("socket.io");
 io = SocketIO(server, { cors: { origin: '*' }, pingInterval: 60000 });
 
@@ -30,4 +30,4 @@ io.on('close', async (socket) => {
     io.emit('socketsConnected', { socketsConnected });
 })
 
-server.listen(3052, () => { console.log('Server ONLINE') });
+server.listen(80, () => { console.log('Server ONLINE') });
