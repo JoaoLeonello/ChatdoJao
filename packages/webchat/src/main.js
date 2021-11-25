@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import App from './App.vue'
-import VueSocketIOExt from 'vue-socket.io-extended';
 import { io } from 'socket.io-client';
-import './index.css'
+import Vue from 'vue';
+import VueSocketIOExt from 'vue-socket.io-extended';
+import App from './App.vue';
+import './index.css';
 
 Vue.config.productionTip = false
 
-const socket = io('http://localhost:3052/');
+const socket = io(`http://${process.env.HEROKU_APP}:3052/`);
 Vue.use(VueSocketIOExt, socket);
 
 new Vue({
