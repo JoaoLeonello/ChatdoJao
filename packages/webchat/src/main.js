@@ -6,7 +6,7 @@ import './index.css';
 
 Vue.config.productionTip = false
 
-const socket = io(`https://${process.env.NEXT_PUBLIC_HEROKU_API}/`);
+const socket = io(`${process.env.NEXT_PUBLIC_HEROKU_API}/ws`);
 Vue.use(VueSocketIOExt, socket);
 
 new Vue({

@@ -206,7 +206,7 @@ export default {
     },
 
     setupSocket() {
-      const socket = io(`https://${process.env.NEXT_PUBLIC_HEROKU_API}/ws`, { query: { "username": `${this.username}` } });
+      const socket = io(`${process.env.NEXT_PUBLIC_HEROKU_API}/ws`, { query: { "username": `${this.username}` } });
 
       Vue.use(VueSocketIOExt, socket);
       return;
