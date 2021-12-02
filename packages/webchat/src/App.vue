@@ -186,6 +186,9 @@ export default {
       isConnected: false,
     };
   },
+  created() {
+    console.log(process.env.NEXT_PUBLIC_HEROKU_API);
+  },
   methods: {
     sendMessage() {
       if (this.userMessageInput === '') {
