@@ -187,7 +187,7 @@ export default {
     };
   },
   created() {
-    console.log(process.env.NEXT_PUBLIC_HEROKU_API);
+    console.log('login', process.env.NEXT_PUBLIC_HEROKU_API)
   },
   methods: {
     sendMessage() {

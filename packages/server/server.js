@@ -30,4 +30,4 @@ io.on('close', async (socket) => {
     io.emit('socketsConnected', { socketsConnected });
 })
 
-server.listen(8080, () => { console.log('Server ONLINE') });
+server.listen(5999, () => { console.log('Server ONLINE') });
