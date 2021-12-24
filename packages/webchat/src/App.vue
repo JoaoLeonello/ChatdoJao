@@ -186,6 +186,9 @@ export default {
       isConnected: false,
     };
   },
+  mounted() {
+    console.log('---', this.$socket);
+  },
   methods: {
     sendMessage() {
       if (this.userMessageInput === '') {
@@ -206,8 +209,7 @@ export default {
     },
 
     setupSocket() {
-      const socket = io(`https://joaoleonello-chatdojao-main.herokuapp.com/ws`, { query: { "username": `${this.username}` } });
-
+      const socket = io(process.env.VUE_APP_HOST, { query: { "username": `${this.username}` } });
       Vue.use(VueSocketIOExt, socket);
       return;
     },

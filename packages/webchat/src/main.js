@@ -6,7 +6,7 @@ import './index.css';
 
 Vue.config.productionTip = false
 
-const socket = io(`https://joaoleonello-chatdojao-main.herokuapp.com/ws`);
+const socket = io(process.env.VUE_APP_HOST);
 Vue.use(VueSocketIOExt, socket);
 
 new Vue({

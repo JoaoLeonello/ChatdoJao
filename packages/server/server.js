@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const server = require("https").createServer(app);
+const server = require("http").createServer(app);
 const SocketIO = require("socket.io");
 io = SocketIO(server, { cors: { origin: '*' }, pingInterval: 60000 });
 
@@ -22,12 +22,14 @@ io.on('connection', async (socket) => {
         socketsConnected = socketsConnected.filter(username => username !== socketUsername)
         socketsConnected.push(username);
         socketUsername = username
-    })
+    });
 });
 
 io.on('close', async (socket) => {
     socketsConnected = socketsConnected.filter(sckt => sckt.id !== socket.id)
     io.emit('socketsConnected', { socketsConnected });
-})
+});
 
-server.listen(5999, () => { console.log('Server ONLINE') });
+server.listen(3000, () => {
+    console.log('>> API ON <<');
+});
