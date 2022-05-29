@@ -186,9 +186,6 @@ export default {
       isConnected: false,
     };
   },
-  mounted() {
-    console.log('---', this.$socket);
-  },
   methods: {
     sendMessage() {
       if (this.userMessageInput === '') {
